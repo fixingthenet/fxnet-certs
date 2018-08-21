@@ -1,0 +1,8 @@
+{
+ "name": "fxnet-dyndns",
+ "docker": {
+   "repo": "fxnet",
+   "name": "fxnet-certs"
+ }
+
+}

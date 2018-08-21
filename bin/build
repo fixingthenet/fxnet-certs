@@ -1,0 +1,19 @@
+#!/bin/bash
+tag=`date +%Y%m%d%H%M`
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+APP_DIR="$DIR/.."
+PRJ="$APP_DIR/project.json"
+repo=`jq -r ".docker.repo" $PRJ`
+project=`jq -r ".docker.name" $PRJ`
+image="$repo/$project"
+
+#`aws ecr get-login --region eu-west-1`
+docker build -t "$image:latest" $APP_DIR
+
+if [ "$1" == "release" ]; then
+  docker build -t "$image:latest" $APP_DIR
+  docker push $image:latest
+  docker tag $image:latest $image:$tag
+  docker push $image:$tag
+  echo "Pushed $image, Tag: $tag"
+fi
