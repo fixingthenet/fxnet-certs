@@ -14,6 +14,8 @@ RUN git clone https://github.com/Neilpang/acme.sh.git && \
     cd ./acme.sh && \
     ./acme.sh --install --force
 
+ADD adds/Gemfile /code
+RUN bundle install
 
 ADD adds/issue.rb /code/issue.rb
 
