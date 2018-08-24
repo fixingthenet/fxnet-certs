@@ -590,6 +590,7 @@ GEM
       aws-sigv4 (~> 1.0)
     aws-sigv2 (1.0.1)
     aws-sigv4 (1.0.3)
+    hashie (3.6.0)
     jmespath (1.4.0)
 
 PLATFORMS
@@ -597,6 +598,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk (~> 3)
+  hashie
 
 BUNDLED WITH
    1.15.4
