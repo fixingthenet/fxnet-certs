@@ -44,6 +44,7 @@ bin/issue.rb
 ```
 
 ## TODO
+ * more tests!
  * more issuers/renewers
  * more deployers
  * more checkers
