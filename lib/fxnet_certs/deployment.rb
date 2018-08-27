@@ -44,7 +44,8 @@ module FxnetCerts
                                         cert: @cert,
                                         logger: @logger,
                                         target: @config.target)
-
+      else
+        # don't deploy
       end
     end
     private
@@ -53,7 +54,5 @@ module FxnetCerts
                                          @config.test.port, logger: @logger)
 
     end
-
-
   end
 end
