@@ -19,9 +19,9 @@ container) containing sth like:
       "test": { "host": "www.example.com", "port": "443"},
       "target": {
          "type": "aws-elb-classic",
-         "balancer_name": "staging-metoda-lb-star-v2"
+         "balancer_name": "funny-elb-balancer-name"
       },
-      "cert": "metoda_star"
+      "cert": "my_example"
     },
     ....more deployments
   ],
