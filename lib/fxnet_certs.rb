@@ -1,16 +1,22 @@
 require 'fxnet_certs/config'
 require 'fxnet_certs/certificate'
 require 'fxnet_certs/deployment'
+require 'fxnet_certs/certer'
 
 module FxnetCerts
 
   class Runner
     DAY=24*60*60
-    def initialize(basepath: "/data", logger: Logger.new(STDOUT))
+    def initialize(basepath: "/data",
+                   logger: Logger.new(STDOUT),
+                   days: 7,
+                   dns_provider:
+                  )
       @basepath=Pathname.new(basepath)
       @logger=logger
       @config=Config.load(@basepath.join("domains.json"))
-      @min_valid_after=Time.now+7*DAY
+      @min_valid_after=Time.now+days*DAY
+      @dns_provider=dns_provider
       certificates
       deployments
     end
@@ -40,7 +46,9 @@ module FxnetCerts
     def certificates
       return @certificates.values if defined?(@certificates)
       @certificates={}
+
       @config.certs.each do |cert_config|
+
         cert=@certificates[cert_config.name]=Certificate.new(cert_config.name,
                                                        cert_config.domains,
                                                        @basepath.join('certs'),
@@ -60,11 +68,15 @@ module FxnetCerts
 
         when :issue
           @logger.debug("Issuing Cert: #{deployment.name}:#{deployment.cert_name}")
-          certificate(deployment.cert_name).issue!
+          Certer.new(certificate(deployment.cert_name),
+                     logger: @logger,
+                     dns_provider: @dns_provider).issue!
           deployment.deploy!
         when :renew
           @logger.debug("Renwing Cert: #{deployment.name}:#{deployment.cert_name}")
-          certificate(deployment.cert_name).renew!
+          Certer.new(certificate(deployment.cert_name),
+                     logger: @logger,
+                     dns_provider: @dns_provider).renew!
           deployment.deploy!
         end
       end

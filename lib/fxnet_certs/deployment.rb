@@ -44,6 +44,14 @@ module FxnetCerts
                                         cert: @cert,
                                         logger: @logger,
                                         target: @config.target)
+      when 'aws-elb-application'
+        require 'fxnet_certs/aws_elbv2_deployer'
+        deployer=AWSELBV2Deployer.deploy(
+          deployment: self,
+          cert: @cert,
+          logger: @logger,
+          target: @config.target
+        )
       else
         # don't deploy
       end

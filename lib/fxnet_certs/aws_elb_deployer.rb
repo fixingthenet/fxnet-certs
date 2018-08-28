@@ -26,7 +26,7 @@ module FxnetCerts
 
     private
     def upload_server_cert
-      iam=Aws::IAM::Client.new(region: 'eu-west-1')
+      iam=Aws::IAM::Client.new
       certs=iam.list_server_certificates({max_items: 1000}).server_certificate_metadata_list.select { |cm| cm.server_certificate_name == @cert.versioned_name}
       unless certs.empty?
         @logger.info("Cert Deployment: hold #{@cert.versioned_name} on #{@balancer_name}")
@@ -44,11 +44,14 @@ module FxnetCerts
 
     end
     def set_server_cert(iam_arn)
-      client=Aws::ElasticLoadBalancing::Client.new(region: 'eu-west-1')
+      client=Aws::ElasticLoadBalancing::Client.new
+      begin
       lb=client.
            describe_load_balancers(load_balancer_names: [@balancer_name]).
            load_balancer_descriptions[0]
-
+      rescue Aws::ElasticLoadBalancing::Errors::LoadBalancerNotFound
+        lb=nil
+      end
       if lb
         listeners=lb.listener_descriptions.select { |ld| ld.listener.protocol == 'HTTPS'}
         if listeners.empty?

@@ -5,11 +5,13 @@ module FxnetCerts
     attr_reader :cert
     def initialize(cert,
                    test: false,
+                   dns_provider:,
                    logger: Logger.new(STDOUT))
       @test=test
       @cert=cert
       @logger=logger
       @errors=[]
+      @dns_provider=dns_provider
     end
 
     def acme_args
@@ -24,7 +26,7 @@ module FxnetCerts
       @logger.info("Issuing new cert: #{cert.name}")
       cmd=[ACME,
            "--issue",
-           "--dns #{ENV["DNS_PROVIDER"]}",
+           "--dns #{@dns_provider}",
            acme_args,
           ].flatten
 

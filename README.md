@@ -18,7 +18,7 @@ container) containing sth like:
     { "name": "some_name", 
       "test": { "host": "www.example.com", "port": "443"},
       "target": {
-         "type": "aws-elb-classic",
+         "type": "aws-elb-classic|aws-elb-application",
          "balancer_name": "funny-elb-balancer-name"
       },
       "cert": "my_example"
@@ -37,7 +37,15 @@ container) containing sth like:
  }
 ```
 
+Set the following evironment variables:
+ * DNS_PROVIDER (default :none) see https://github.com/Neilpang/acme.sh/blob/master/dnsapi/README.md, you might have to set further environment variables
+ * LOGGER_LEVEL (default 'error') one of debug, info, warn, error
+ * DAYS (default 7) days a cert will be renewed before it expires
+
+
+
 ## Running it
+
 
 ```
 bin/issue.rb

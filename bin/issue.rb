@@ -27,4 +27,11 @@
 $: << File.expand_path(File.join(__dir__,'../lib'))
 
 require 'fxnet_certs'
-FxnetCerts.run
+logger=Logger.new(STDOUT)
+logger.level=ENV["LOGGER_LEVEL"] || 'error'
+
+FxnetCerts.run(basepath: "/data",
+               logger: logger,
+               days: (ENV["DAYS"] || 7).to_i,
+               dns_provider: ENV["DNS_PROVIDER"]
+              )

@@ -1,6 +1,5 @@
 require 'pathname'
 require 'openssl'
-require 'fxnet_certs/certer'
 
 module FxnetCerts
   class Certificate
@@ -35,15 +34,6 @@ module FxnetCerts
       Digest::MD5.hexdigest(File.read(fullchain_path))
     end
 
-    def issue!
-      certer=Certer.new(self, logger: @logger)
-      certer.issue!
-    end
-
-    def renew!
-      certer=Certer.new(self, logger: @logger)
-      certer.renew!
-    end
     def cert
       OpenSSL::X509::Certificate.new(File.read(fullchain_path))
     end
