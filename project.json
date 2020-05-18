@@ -1,5 +1,6 @@
 {
- "name": "fxnet-dyndns",
+ "name": "fxnet-certs",
+ "path": "fxnet-certs",
  "docker": {
    "repo": "fxnet",
    "name": "fxnet-certs"

@@ -34,7 +34,7 @@ def issue
 end
 
 def renew
-  cmd="#{ACME} --cron"
+  cmd="#{ACME} --renew-all"
   run(cmd)
 end
 

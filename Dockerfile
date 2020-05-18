@@ -14,7 +14,7 @@ RUN git clone https://github.com/Neilpang/acme.sh.git && \
     cd ./acme.sh && \
     ./acme.sh --install --force
 
-
+RUN mkdir /data
 ADD adds/issue.rb /code/issue.rb
 
 CMD "/bin/bash"
