@@ -37,24 +37,25 @@ module FxnetCerts
     end
 
     def deploy!
-      case @config.target.type
+      deployer=case @config.target.type
       when 'aws-elb-classic'
         require 'fxnet_certs/aws_elb_deployer'
-        deployer=AWSELBDeployer.deploy(deployment: self,
-                                        cert: @cert,
-                                        logger: @logger,
-                                        target: @config.target)
+        AWSELBDeployer
       when 'aws-elb-application'
         require 'fxnet_certs/aws_elbv2_deployer'
-        deployer=AWSELBV2Deployer.deploy(
+        AWSELBV2Deployer
+      when 'file'
+        require 'fxnet_certs/file_deployer'
+        FileDeployer
+      else
+        raise "unkown deployer"
+      end
+      deployer.deploy(
           deployment: self,
           cert: @cert,
           logger: @logger,
           target: @config.target
         )
-      else
-        # don't deploy
-      end
     end
     private
     def checker

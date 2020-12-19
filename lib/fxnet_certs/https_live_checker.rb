@@ -44,6 +44,7 @@ module FxnetCerts
     private
 
     def check
+      @logger.debug("checking #{@host}:#{@port}")
       tcp_sock = TCPSocket.new(@host, @port)
       ctx = OpenSSL::SSL::SSLContext.new
       ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -54,7 +55,5 @@ module FxnetCerts
       @peer_cert_chain=ssl_sock.peer_cert_chain
       ssl_sock.close
     end
-
-
   end
 end
