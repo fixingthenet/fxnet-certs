@@ -1,0 +1,38 @@
+{ 
+  "deployments": [
+    { "name": "staging_metoda_star", 
+      "test": { "host": "staging-account.metoda.com", "port": "443"},
+      "target": {
+         "type": "aws-elb-classic",
+         "balancer_name": "staging-metoda-lb-star-v2"
+      },
+      "cert": "metoda_star"
+    },
+    { "name": "staging_preisanalytics",
+      "test": { "host": "www.preisanalytics.de", "port": "443"},
+      "target": {
+         "type": "aws-elb-classic",
+         "balancer_name": "preisanalytics-staging"
+      },
+      "cert": "preisanalytics_star"
+    }
+  ],
+
+  "certs": [
+  { "name": "metoda_star",
+    
+    "domains": [
+      { "fqdn": "metoda.com" },
+      { "fqdn": "*.metoda.com" }
+    ]
+  },
+  { "name": "preisanalytics_star",
+    
+    "domains": [
+      { "fqdn": "preisanalytics.de" },
+      { "fqdn": "*.preisanalytics.de" }
+    ]
+  }
+  ]
+}
+
