@@ -12,10 +12,10 @@ module FxnetCerts
       result=true
       fqdns.each do |domain|
         if OpenSSL::SSL.verify_certificate_identity(@cert, domain)
-          @logger.debug("HTTPS Checking domain: ok #{@filename} #{domain} }")
+          @logger.debug("HTTPS Checking domain: ok #{@filename} #{domain} ")
         else
           result = false
-          @logger.debug("HTTPS Checking domain: failed #{@filename} #{domain} }")
+          @logger.debug("HTTPS Checking domain: failed #{@filename} #{domain}")
         end
       end
       result
@@ -27,9 +27,9 @@ module FxnetCerts
        cert = @cert
         left=((cert.not_after - min_valid_after).to_f/(24*60*60))
         if cert.not_after > min_valid_after
-          @logger.debug("HTTPS Checking days: ok #{@host}:#{@port} #{left} }")
+          @logger.debug("HTTPS Checking days: ok #{@host}:#{@port} #{left}")
         else
-          @logger.debug("HTTPS Checking days: failed #{@host}:#{@port} #{left} }")
+          @logger.debug("HTTPS Checking days: failed #{@host}:#{@port} #{left}")
           result=false
         end
 #      end

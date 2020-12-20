@@ -13,15 +13,10 @@ module FxnetCerts
       result=true
       fqdns.each do |domain|
         if OpenSSL::SSL.verify_certificate_identity(@peer_cert, domain)
-          @logger.debug("HTTPS Checking domain: ok #{@host}:#{@port} #{domain} }")
+          @logger.debug("HTTPS Checking domain: ok #{@host}:#{@port} #{domain}")
         else
           result = false
-          @logger.debug("HTTPS Checking domain: failed #{@host}:#{@port} #{domain} }")
-          #@suggest=:deploy # we assume that domain checks were done on local certs
-          #log={reason: "domain", domain: domain}
-          #@domain_missmatch_error=true
-          #@errors << log
-          #@logger.warn(log.inspect)
+          @logger.debug("HTTPS Checking domain: failed #{@host}:#{@port} #{domain}")
         end
       end
       result
@@ -32,9 +27,9 @@ module FxnetCerts
       @peer_cert_chain.each do |cert|
         left=((cert.not_after - min_valid_after).to_f/(24*60*60))
         if cert.not_after > min_valid_after
-          @logger.debug("HTTPS Checking days: ok #{@host}:#{@port} #{left} }")
+          @logger.debug("HTTPS Checking days: ok #{@host}:#{@port} #{left}")
         else
-          @logger.debug("HTTPS Checking days: failed #{@host}:#{@port} #{left} }")
+          @logger.debug("HTTPS Checking days: failed #{@host}:#{@port} #{left}")
           result=false
         end
       end
