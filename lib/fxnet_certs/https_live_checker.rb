@@ -2,9 +2,9 @@ require 'aws-sdk'
 
 module FxnetCerts
   class HTTPSLiveChecker
-    def initialize(host, port, logger: Logger.new(STDOUT))
-      @host=host
-      @port=port
+    def initialize(test, logger: Logger.new(STDOUT))
+      @host=test.host
+      @port=test.port
       @logger=logger
       check
     end

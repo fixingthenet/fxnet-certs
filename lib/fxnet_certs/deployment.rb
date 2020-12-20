@@ -1,4 +1,4 @@
-require 'fxnet_certs/https_live_checker'
+
 module FxnetCerts
   class Deployment
 
@@ -57,11 +57,22 @@ module FxnetCerts
           target: @config.target
         )
     end
+    
     private
+    
     def checker
-      @live_checker ||= HTTPSLiveChecker.new(@config.test.host,
-                                         @config.test.port, logger: @logger)
-
+      return @checker if defined?(@checker)
+      chk=case @config.test.type
+      when 'live'
+        require 'fxnet_certs/https_live_checker'
+        @checker = HTTPSLiveChecker
+      when 'file'
+        require 'fxnet_certs/file_checker'
+        @checker = FileChecker
+      else
+        raise "Unknown checker"
+      end
+      @checker = chk.new(@config.test, logger: @logger)
     end
   end
 end
