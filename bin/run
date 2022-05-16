@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+exec bundle exec bin/issue.rb
+

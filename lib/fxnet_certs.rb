@@ -7,14 +7,16 @@ module FxnetCerts
 
   class Runner
     DAY=24*60*60
-    def initialize(basepath: "/data",
+    def initialize(basepath: "/mnt/data",
+                   configpath: "/mnt/config",
                    logger: Logger.new(STDOUT),
                    days: 7,
                    dns_provider:
                   )
       @basepath=Pathname.new(basepath)
+      @configpath=Pathname.new(configpath)
       @logger=logger
-      @config=Config.load(@basepath.join("domains.json"))
+      @config=Config.load(@configpath.join("domains.json"))
       @min_valid_after=Time.now+days*DAY
       @dns_provider=dns_provider
       certificates
@@ -73,7 +75,7 @@ module FxnetCerts
                      dns_provider: @dns_provider).issue!
           deployment.deploy!
         when :renew
-          @logger.debug("Renwing Cert: #{deployment.name}:#{deployment.cert_name}")
+          @logger.debug("Renewing Cert: #{deployment.name}:#{deployment.cert_name}")
           Certer.new(certificate(deployment.cert_name),
                      logger: @logger,
                      dns_provider: @dns_provider).renew!

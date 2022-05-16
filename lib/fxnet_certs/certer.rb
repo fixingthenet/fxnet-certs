@@ -4,7 +4,7 @@ module FxnetCerts
 
     attr_reader :cert
     def initialize(cert,
-                   test: false,
+                   test: true,
                    dns_provider:,
                    logger: Logger.new(STDOUT))
       @test=test
@@ -19,6 +19,14 @@ module FxnetCerts
         domain_flags,
         "--cert-home  /data/certs/#{cert.name}",
         "--config-home /data/config",
+#        "--debug",
+        "--force",
+#        "--register-account", 
+        "-m peter.schrammel@gmx.de"
+#        "--challenge-alias",
+#        "dev.fixingthe.net",
+#        "--domain-alias",
+#        "dev.fixingthe.net"
       ].flatten
     end
 

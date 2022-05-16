@@ -6,4 +6,6 @@ data/
 npm-debug.log*
 cordova/platforms
 cordova/plugins
+tmp
 *~
+.byebug_history

@@ -9,6 +9,7 @@ module FxnetCerts
     end
 
     def valid_domains?(fqdns)
+      return false unless @cert
       result=true
       fqdns.each do |domain|
         if OpenSSL::SSL.verify_certificate_identity(@cert, domain)
@@ -22,6 +23,7 @@ module FxnetCerts
     end
 
     def valid_after?(min_valid_after)
+      return false unless @cert
       result = true
 #      @peer_cert_chain.each do |cert|
        cert = @cert
@@ -39,7 +41,7 @@ module FxnetCerts
     private
 
     def check
-      @cert=OpenSSL::X509::Certificate.new(File.read(@filename))
+      @cert=OpenSSL::X509::Certificate.new(File.read(@filename)) rescue nil
     end
   end
 end

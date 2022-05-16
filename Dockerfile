@@ -1,4 +1,4 @@
-FROM ruby:2.4.1
+FROM ruby:2.7.5-bullseye
 
 RUN apt-get update -y && \
     apt-get install -y \
@@ -10,9 +10,10 @@ RUN apt-get update -y && \
 ENV APP_DIR=/code
 WORKDIR $APP_DIR
 
-RUN git clone https://github.com/Neilpang/acme.sh.git && \
+RUN git clone https://github.com/acmesh-official/acme.sh.git && \
     cd ./acme.sh && \
-    ./acme.sh --install --force
+    ./acme.sh --install --force &&\
+    ./acme.sh --set-default-ca  --server  letsencrypt
 
 ADD Gemfile /code/Gemfile
 ADD Gemfile.lock /code/Gemfile.lock

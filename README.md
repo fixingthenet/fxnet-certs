@@ -6,6 +6,8 @@
  * checks certificates online (currently host port checks supported)
  * deploys certs if needed (currently AWS elb supported)
 
+
+
 ## Configuration
 
 Create a file in /data/domains.json (best is to mount /data into your
@@ -41,6 +43,8 @@ Set the following evironment variables:
  * DNS_PROVIDER (default :none) see https://github.com/Neilpang/acme.sh/blob/master/dnsapi/README.md, you might have to set further environment variables
  * LOGGER_LEVEL (default 'error') one of debug, info, warn, error
  * DAYS (default 7) days a cert will be renewed before it expires
+ * AWS_ACCESS_KEY_ID
+ * AWS_SECRET_ACCESS_KEY
 
 
 

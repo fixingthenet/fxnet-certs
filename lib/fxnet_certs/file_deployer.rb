@@ -18,7 +18,7 @@ module FxnetCerts
     end
 
     def deploy!
-#      File.write(@filename, @cert)
+      File.write(@filename, @cert)
       @logger.info("Cert Deployment: result #{@filename}")
       self
     end

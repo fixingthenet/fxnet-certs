@@ -1,7 +1,9 @@
-data
 *~
 spec
 project.json
 .git
 Dockerfile
+tmp
+.byebug_history
+data
 

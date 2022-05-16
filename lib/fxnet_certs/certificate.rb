@@ -13,8 +13,7 @@ module FxnetCerts
 
     def generate_fullchain
       @logger.debug("Fullchain at: #{fullchain_path}")
-      content="#{cert_body}\n#{ca_body}\n#{private_key_body}"
-
+      content= full_body
       changed=false
       if File.exist?(fullchain_path)
         backup=File.read(fullchain_path)
@@ -62,6 +61,10 @@ module FxnetCerts
       "#{cert_path}/fullchain.full"
     end
 
+    def full_body
+     "#{cert_body}\n#{ca_body}\n#{private_key_body}"
+    end
+    
     def cert_body
       File.read("#{cert_path}/#{main_domain}.cer") rescue nil
     end
