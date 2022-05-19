@@ -4,12 +4,14 @@ module FxnetCerts
 
     attr_reader :cert
     def initialize(cert,
-                   test: true,
+                   test: false,
                    dns_provider:,
+                   basepath:,
                    logger: Logger.new(STDOUT))
       @test=test
       @cert=cert
       @logger=logger
+      @basepath=basepath
       @errors=[]
       @dns_provider=dns_provider
     end
@@ -17,8 +19,8 @@ module FxnetCerts
     def acme_args
       [
         domain_flags,
-        "--cert-home  /data/certs/#{cert.name}",
-        "--config-home /data/config",
+        "--cert-home  #{@basepath.join("certs/#{cert.name}")}",
+        "--config-home #{@basepath.join('config')}",
 #        "--debug",
         "--force",
 #        "--register-account", 

@@ -1,5 +1,7 @@
 require 'pathname'
 require 'openssl'
+require 'fileutils'
+
 
 module FxnetCerts
   class Certificate
@@ -9,6 +11,7 @@ module FxnetCerts
       @domains=domains
       @basepath=Pathname.new(basepath)
       @logger=logger
+      ensure_cert_path
     end
 
     def generate_fullchain
@@ -76,5 +79,9 @@ module FxnetCerts
     def ca_body
       File.read("#{cert_path}/ca.cer") rescue nil
     end
+    
+    def ensure_cert_path
+      FileUtils.mkdir_p(cert_path)
+    end  
   end
 end

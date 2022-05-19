@@ -8,8 +8,10 @@
 # AWS_SECRET_ACCESS_KEY
 
 require 'byebug'
+require 'aws-sdk'
+
 $: << File.expand_path(File.join(__dir__,'../lib'))
-#require 'byebug'
+
 require 'fxnet_certs'
 logger=Logger.new(STDOUT)
 logger.level=ENV["LOGGER_LEVEL"] || 'error'

@@ -64,21 +64,22 @@ module FxnetCerts
       deployments.each do |deployment|
         suggestion=suggest(deployment, min_valid_after: @min_valid_after)
         @logger.info("#{deployment.name.ljust(30)}..........#{suggestion}")
+        certer=Certer.new(certificate(deployment.cert_name),
+                     basepath: @basepath,
+                     logger: @logger,
+                     dns_provider: @dns_provider)
+                     
         case suggestion
         when :deploy
           deployment.deploy!
 
         when :issue
           @logger.debug("Issuing Cert: #{deployment.name}:#{deployment.cert_name}")
-          Certer.new(certificate(deployment.cert_name),
-                     logger: @logger,
-                     dns_provider: @dns_provider).issue!
+          certer.issue!
           deployment.deploy!
         when :renew
           @logger.debug("Renewing Cert: #{deployment.name}:#{deployment.cert_name}")
-          Certer.new(certificate(deployment.cert_name),
-                     logger: @logger,
-                     dns_provider: @dns_provider).renew!
+          certer.renew!
           deployment.deploy!
         end
       end

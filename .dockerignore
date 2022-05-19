@@ -5,5 +5,7 @@ project.json
 Dockerfile
 tmp
 .byebug_history
-data
+data/*
+
+
 
