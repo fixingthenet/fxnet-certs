@@ -43,7 +43,6 @@ module FxnetCerts
     def check
       begin
         content=File.read(@filename)
-        byebug
         cert=content.match(/-----BEGIN CERTIFICATE-----\n(.*)-----END CERTIFICATE-----/m)[0]
         @cert=OpenSSL::X509::Certificate.new(cert)
       rescue

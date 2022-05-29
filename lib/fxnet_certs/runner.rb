@@ -3,7 +3,7 @@ module FxnetCerts
     DAY=24*60*60
     def initialize(basepath: "/mnt/data",
                    configpath: "/mnt/config",
-                   logger: Logger.new(STDOUT),
+                   logger: ,
                    days: 7,
                    dns_provider:,
                    test:
@@ -87,7 +87,7 @@ module FxnetCerts
   end # Runner
 
     def self.run(*args)
-      puts "run called"
+      args[0][:logger].info("Starting Certer with args: #{args[0]}")
       Runner.new(*args).run
     end
 end
