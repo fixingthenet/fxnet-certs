@@ -3,6 +3,9 @@ require 'openssl'
 require 'fileutils'
 
 
+# This needs a shared filesystem where the keys and all artefacts are stored
+# TODO: be independent of a filesystem (abstract it, so we could store these things in s3, or retrieve live from a servier)
+
 module FxnetCerts
   class Certificate
     attr_reader :name, :domains, :cert

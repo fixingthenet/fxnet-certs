@@ -2,6 +2,7 @@
  "name": "fxnet-certs",
  "path": "fxnet-certs",
  "docker": {
+   "registry": "registry.schrammel.eu",
    "repo": "fxnet",
    "name": "fxnet-certs"
  }
