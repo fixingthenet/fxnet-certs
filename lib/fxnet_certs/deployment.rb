@@ -30,6 +30,32 @@ module FxnetCerts
       @config.cert
     end
 
+    # first we use the checker to see if what's out there is still valid and matches
+    # the config. If not we have to reissue/renew the cert
+    # TBD: implement a state storage somewhere/how
+    
+    def suggest(min_valid_after: )
+      if valid_domains?
+        if valid_after?(min_valid_after)
+          return :nop
+        end 
+      end
+      
+      if cert_exist? # check stored state
+        if cert_valid_after?(min_valid_after)
+          if cert_valid_domains?
+            :deploy
+          else
+            :issue  
+          end
+        else
+          :renew
+        end
+      else
+        :issue  
+      end
+    end
+
     def cert_exist?
       @cert.exist?
     end

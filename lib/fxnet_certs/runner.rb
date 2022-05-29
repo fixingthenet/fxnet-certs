@@ -5,7 +5,8 @@ module FxnetCerts
                    configpath: "/mnt/config",
                    logger: Logger.new(STDOUT),
                    days: 7,
-                   dns_provider:
+                   dns_provider:,
+                   test:
                   )
       @basepath=Pathname.new(basepath)
       @configpath=Pathname.new(configpath)
@@ -13,6 +14,7 @@ module FxnetCerts
       @config=Config.load(@configpath.join("domains.json"))
       @min_valid_after=Time.now+days*DAY
       @dns_provider=dns_provider
+      @test_only = test
       certificates
       deployments
     end
@@ -56,52 +58,29 @@ module FxnetCerts
 
     def run
       deployments.each do |deployment|
-        suggestion=suggest(deployment, min_valid_after: @min_valid_after)
+        suggestion=deployment.suggest(min_valid_after: @min_valid_after)
         @logger.info("#{deployment.name.ljust(30)}..........#{suggestion}")
         certer=Certer.new(certificate(deployment.cert_name),
                      basepath: @basepath,
                      logger: @logger,
                      dns_provider: @dns_provider)
                      
-        case suggestion
-        when :deploy
-          deployment.deploy!
-
-        when :issue
-          @logger.debug("Issuing Cert: #{deployment.name}:#{deployment.cert_name}")
-          certer.issue!
-          deployment.deploy!
-        when :renew
-          @logger.debug("Renewing Cert: #{deployment.name}:#{deployment.cert_name}")
-          certer.renew!
-          deployment.deploy!
+        if @test_only
+          puts "TEST ONLY, would: #{suggestion}"
+        else  
+          case suggestion
+          when :deploy
+            deployment.deploy!
+          when :issue
+            @logger.debug("Issuing Cert: #{deployment.name}:#{deployment.cert_name}")
+            certer.issue!
+            deployment.deploy!
+          when :renew
+            @logger.debug("Renewing Cert: #{deployment.name}:#{deployment.cert_name}")
+            certer.renew!
+            deployment.deploy!
+          end  
         end
-      end
-    end
-
-    def suggest(deployment, min_valid_after: )
-      if deployment.cert_exist? # check stored state
-        if deployment.cert_valid_after?(min_valid_after)
-          if deployment.cert_valid_domains?
-          # check deployed remote stuff
-          else
-            :issue
-          end
-        else
-          return :renew
-        end
-      else
-        return :issue
-      end
-
-      if deployment.valid_domains?
-        if deployment.valid_after?(min_valid_after)
-          return :nop
-        else
-          return :deploy
-        end
-      else
-        return :deploy
       end
     end
 

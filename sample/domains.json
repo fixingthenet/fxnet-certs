@@ -1,0 +1,26 @@
+{
+  "deployments": [
+    { "name": "fxnet-dev", 
+      "test": { "type": "s3", "bucket": "cert.dev.fixingthe.net", "path": "fxnet-dev.crt"},
+      "target": {
+         "type": "s3",
+         "bucket": "cert.dev.fixingthe.net",
+         "path_crt": "fxnet-dev.crt",
+         "path_key": "fxnet-dev.key"
+      },
+      "cert": "fxnet-dev-star"
+    }
+  ],
+  "certs": [
+    { "name": "fxnet-dev-star",
+      "domains": [
+         { 
+           "fqdn": "*.dev.fixingthe.net"
+         },
+         { 
+           "fqdn": "dev.fixingthe.net"
+         }
+      ]
+    }
+  ]
+}

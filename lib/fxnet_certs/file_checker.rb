@@ -41,7 +41,14 @@ module FxnetCerts
     private
 
     def check
-      @cert=OpenSSL::X509::Certificate.new(File.read(@filename)) rescue nil
+      begin
+        content=File.read(@filename)
+        byebug
+        cert=content.match(/-----BEGIN CERTIFICATE-----\n(.*)-----END CERTIFICATE-----/m)[0]
+        @cert=OpenSSL::X509::Certificate.new(cert)
+      rescue
+        @logger.debug("No crtificate file to check found at: #{@filename}, #{$!.message}")
+      end  
     end
   end
 end

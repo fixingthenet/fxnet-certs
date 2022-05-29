@@ -21,8 +21,9 @@ module FxnetCerts
 
     def deploy!
       s3_client=Aws::S3::Client.new
-      resp=s3_client.put_object(bucket: @bucket, 
-                                key: @path_crt, 
+      @logger.debug("Uploading full cert: #{@cert.full_body}")
+      resp=s3_client.put_object(bucket: @bucket,
+                                key: @path_crt,
                                 body: StringIO.new(@cert.full_body),
                                 acl: 'public-read'
                                 )
