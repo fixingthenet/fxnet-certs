@@ -1,5 +1,7 @@
 FROM ruby:2.7.5-bullseye
 
+ENV FORCE_REBUILD=20220818-0902
+
 RUN apt-get update -y && \
     apt-get install -y \
             gnupg2 \

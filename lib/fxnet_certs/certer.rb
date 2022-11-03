@@ -6,30 +6,38 @@ module FxnetCerts
     def initialize(cert,
                    test: false,
                    dns_provider:,
+                   config:,
                    basepath:,
+                   configpath:,
                    logger: Logger.new(STDOUT))
       @test=test
       @cert=cert
       @logger=logger
       @basepath=basepath
+      @configpath=configpath
+      @config=config
       @errors=[]
       @dns_provider=dns_provider
     end
 
     def acme_args
-      [
+      args=[
         domain_flags,
-        "--cert-home  #{@basepath.join("certs/#{cert.name}")}",
-        "--config-home #{@basepath.join('config')}",
-#        "--debug",
+        "--cert-home  #{@basepath.join("certs",cert.name)}",
+        "--config-home #{@basepath.join("config",cert.name)}",
+        "--debug 2",
         "--force",
 #        "--register-account", 
-        "-m peter.schrammel@gmx.de"
-#        "--challenge-alias",
-#        "dev.fixingthe.net",
-#        "--domain-alias",
-#        "dev.fixingthe.net"
+        "-m #{@config.cert(cert.name).issuer}"
       ].flatten
+      if domain_alias = @config.cert(cert.name).domain_alias
+        args = args.concat(
+          ["--domain-alias",
+          domain_alias,
+          ]
+        )  
+      end
+      args
     end
 
     def issue!

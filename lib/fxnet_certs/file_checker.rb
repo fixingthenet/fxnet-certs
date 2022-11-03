@@ -1,5 +1,3 @@
-require 'aws-sdk'
-
 module FxnetCerts
   class FileChecker
     def initialize(test, logger: Logger.new(STDOUT))

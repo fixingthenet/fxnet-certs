@@ -61,7 +61,9 @@ module FxnetCerts
         suggestion=deployment.suggest(min_valid_after: @min_valid_after)
         @logger.info("#{deployment.name.ljust(30)}..........#{suggestion}")
         certer=Certer.new(certificate(deployment.cert_name),
+                     config: @config,
                      basepath: @basepath,
+                     configpath: @configpath,
                      logger: @logger,
                      dns_provider: @dns_provider)
                      
