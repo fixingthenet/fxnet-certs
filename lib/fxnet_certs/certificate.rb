@@ -36,11 +36,11 @@ module FxnetCerts
     end
 
     def version
-      Digest::MD5.hexdigest(File.read(fullchain_path))
+      Digest::MD5.hexdigest(full_body)
     end
 
     def cert
-      OpenSSL::X509::Certificate.new(File.read(fullchain_path))
+      OpenSSL::X509::Certificate.new(full_body)
     end
 
     def valid_after?(min_valid_after)
@@ -60,11 +60,11 @@ module FxnetCerts
     end
 
     def cert_path
-      @basepath.join(name,main_domain)
+      @basepath.join(name,main_domain+'_ecc')
     end
 
     def fullchain_path
-      "#{cert_path}/fullchain.full"
+      cert_path.join("fullchain.full")
     end
 
     def full_body
