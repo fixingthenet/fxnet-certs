@@ -8,7 +8,6 @@
 # AWS_SECRET_ACCESS_KEY
 
 require 'byebug'
-require 'aws-sdk'
 require 'optparse'
 
 $: << File.expand_path(File.join(__dir__,'../lib'))
