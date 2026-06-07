@@ -69,19 +69,25 @@ module FxnetCerts
                      
         if @test_only
           puts "TEST ONLY, would: #{suggestion}"
-        else  
+        else
           case suggestion
           when :deploy
             deployment.deploy!
           when :issue
             @logger.debug("Issuing Cert: #{deployment.name}:#{deployment.cert_name}")
-            certer.issue!
-            deployment.deploy!
+            if certer.issue!
+              deployment.deploy!
+            else
+              @logger.error("Skipping deployment for #{deployment.name} due to issue failure")
+            end
           when :renew
             @logger.debug("Renewing Cert: #{deployment.name}:#{deployment.cert_name}")
-            certer.renew!
-            deployment.deploy!
-          end  
+            if certer.renew!
+              deployment.deploy!
+            else
+              @logger.error("Skipping deployment for #{deployment.name} due to renew failure")
+            end
+          end
         end
       end
     end

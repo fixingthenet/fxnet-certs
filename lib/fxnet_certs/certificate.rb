@@ -19,6 +19,9 @@ module FxnetCerts
 
     def generate_fullchain
       @logger.debug("Fullchain at: #{fullchain_path}")
+      raise "Missing certificate file for #{main_domain}" unless cert_body
+      raise "Missing CA file for #{main_domain}" unless ca_body
+      raise "Missing private key file for #{main_domain}" unless private_key_body
       content= full_body
       changed=false
       if File.exist?(fullchain_path)

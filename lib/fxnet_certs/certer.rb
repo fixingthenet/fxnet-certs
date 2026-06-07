@@ -28,7 +28,8 @@ module FxnetCerts
         "--debug 2",
         "--force",
         "--log",
-#        "--register-account", 
+        "--server letsencrypt",
+#        "--register-account",
         "-m #{@config.cert(cert.name).issuer}"
       ].flatten
       if domain_alias = @config.cert(cert.name).domain_alias
@@ -53,11 +54,19 @@ module FxnetCerts
 
       cmd=cmd.flatten.join(' ')
       if run(cmd)
-        cert.generate_fullchain
+        begin
+          cert.generate_fullchain
+          true
+        rescue => e
+          @errors << { reason: "issue_failed", error: e.message }
+          @logger.error("Cert issue failed for #{cert.name}: #{e.message}")
+          false
+        end
       else
         @errors << { reason: "issue_failed"}
+        @logger.error("Cert issue failed for #{cert.name}")
+        false
       end
-      self
     end
 
     def renew!
@@ -72,11 +81,23 @@ module FxnetCerts
 
       cmd=cmd.flatten.join(' ')
       if run(cmd)
-        cert.generate_fullchain
+        begin
+          cert.generate_fullchain
+          true
+        rescue => e
+          @errors << { reason: "renew_failed", error: e.message }
+          @logger.error("Cert renew failed for #{cert.name}: #{e.message}")
+          false
+        end
       else
-        @errors << { reason: "issue_failed"}
+        @errors << { reason: "renew_failed"}
+        @logger.error("Cert renew failed for #{cert.name}")
+        false
       end
+    end
 
+    def success?
+      @errors.empty?
     end
 
     private
