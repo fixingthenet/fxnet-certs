@@ -1,5 +1,6 @@
 module FxnetCerts
   class FileChecker
+    DAY_SECONDS=24*60*60
     def initialize(test, logger: Logger.new(STDOUT))
       @filename=test.filename
       @logger=logger
@@ -25,7 +26,7 @@ module FxnetCerts
       result = true
 #      @peer_cert_chain.each do |cert|
        cert = @cert
-        left=((cert.not_after - min_valid_after).to_f/(24*60*60))
+        left=((cert.not_after - min_valid_after).to_f/(DAY_SECONDS))
         if cert.not_after > min_valid_after
           @logger.debug("HTTPS Checking days: ok #{@host}:#{@port} #{left}")
         else

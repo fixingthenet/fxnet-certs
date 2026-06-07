@@ -1,11 +1,12 @@
 # Cert updater
 
 ## Functionality
- * checks certificates in a storage (currently a local/nfs file) for
-   validity, renews / issues with letsencrypt if needed
+ * checks certificates in a storage for validity, renews / issues with letsencrypt if needed
  * checks certificates online (currently host port checks supported)
- * deploys certs if needed (currently AWS elb supported)
+ * deploys certs if needed
 
+We use currently just a very limited set: generating certificate and store
+it on s3 for retrieval by the dev teams.
 
 
 ## Configuration
@@ -60,5 +61,3 @@ bin/issue.rb
  * more issuers/renewers
  * more deployers
  * more checkers
-
-

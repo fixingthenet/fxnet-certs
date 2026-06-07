@@ -27,6 +27,7 @@ module FxnetCerts
         "--config-home #{@basepath.join("config",cert.name)}",
         "--debug 2",
         "--force",
+        "--log",
 #        "--register-account", 
         "-m #{@config.cert(cert.name).issuer}"
       ].flatten
