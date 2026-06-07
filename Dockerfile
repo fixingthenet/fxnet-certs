@@ -1,6 +1,6 @@
 FROM ruby:2.7.5-bullseye as ccs-app-code
 
-ENV FORCE_REBUILD=20220818-0902
+ENV FORCE_REBUILD=20220818-1335
 
 RUN apt-get update -y && \
     apt-get install -y \
